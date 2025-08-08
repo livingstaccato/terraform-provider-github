@@ -31,3 +31,12 @@ Feature: resource_github_repository_collaborators
     And the user "test-user" is a collaborator on the repository
     When I delete the `resource_github_repository_collaborators`
     Then the user "test-user" should not be a collaborator on the "test-repo" repository
+
+  Scenario: Ignore a team when managing collaborators
+    Given I have a GitHub repository named "test-repo"
+    And the repository has a team with the slug "my-team"
+    When I define a `resource_github_repository_collaborators` with the following attributes:
+      | repository | "test-repo" |
+    And an "ignore_team" block with the following attributes:
+      | team_id | "my-team" |
+    Then the team "my-team" should be ignored when managing collaborators
